@@ -1,6 +1,5 @@
 import { useSearchParams } from 'react-router-dom';
 import { SearchLink } from './SearchLink';
-import { useState } from 'react';
 
 enum Sex {
   Male = 'm',
@@ -25,7 +24,9 @@ export const PeopleFilters: React.FC = () => {
   ];
   const [searchParams, setSearchParams] = useSearchParams();
   const sex = searchParams.get('sex');
-  const [inputParam, setInputParam] = useState('');
+  // const [inputParam, setInputParam] = useState('');
+
+  const query = searchParams.get('query') || '';
   const searchCenturies = searchParams.getAll('centuries');
 
   const handleSex = (param: string) => {
@@ -37,7 +38,7 @@ export const PeopleFilters: React.FC = () => {
   const handleInputParam = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newParam = new URLSearchParams(searchParams);
 
-    setInputParam(e.target.value);
+    // setInputParam(e.target.value);
     newParam.set('query', e.target.value);
 
     if (!e.target.value) {
@@ -47,7 +48,7 @@ export const PeopleFilters: React.FC = () => {
     setSearchParams(newParam);
   };
 
-  const handleCentries = (param: string) => {
+  const handleCenturies = (param: string) => {
     const newCenturies = searchCenturies.includes(param)
       ? searchCenturies.filter(elem => elem !== param)
       : [...searchCenturies, param];
@@ -83,7 +84,7 @@ export const PeopleFilters: React.FC = () => {
             data-cy="NameFilter"
             type="search"
             className="input"
-            value={inputParam}
+            value={query}
             onChange={e => handleInputParam(e)}
             placeholder="Search"
           />
@@ -101,7 +102,7 @@ export const PeopleFilters: React.FC = () => {
               return (
                 <SearchLink
                   key={century}
-                  params={handleCentries(century)}
+                  params={handleCenturies(century)}
                   data-cy="century"
                   className={
                     searchCenturies.includes(century)
@@ -138,7 +139,6 @@ export const PeopleFilters: React.FC = () => {
             centuries: null,
             query: null,
           }}
-          onClick={() => setInputParam('')}
           className="button is-link is-outlined is-fullwidth"
         >
           Reset all filters

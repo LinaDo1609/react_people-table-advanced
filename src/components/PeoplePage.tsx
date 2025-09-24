@@ -14,7 +14,7 @@ export const PeoplePage = () => {
   const [errorType, setErrorType] = useState('');
   const sex = searchParams.get('sex');
   const query = searchParams.get('query')?.toLowerCase();
-  const centries = searchParams.getAll('centuries');
+  const centuries = searchParams.getAll('centuries');
 
   useEffect(() => {
     getPeople()
@@ -42,15 +42,15 @@ export const PeoplePage = () => {
           (query
             ? person.name.toLowerCase().includes(query) ||
               person.motherName?.toLowerCase().includes(query) ||
-              person.motherName?.toLowerCase().includes(query)
+              person.fatherName?.toLowerCase().includes(query)
             : true) &&
-          (centries.length > 0
-            ? centries.includes(String(Math.ceil(person.born / 100)))
+          (centuries.length > 0
+            ? centuries.includes(String(Math.ceil(person.born / 100)))
             : true)
         );
       }) || []
     );
-  }, [peopleInfo, centries, query, sex]);
+  }, [peopleInfo, centuries, query, sex]);
 
   const showFilterError = filteredList.length === 0;
 
@@ -61,7 +61,7 @@ export const PeoplePage = () => {
       <div className="block">
         <div className="columns is-desktop is-flex-direction-row-reverse">
           <div className="column is-7-tablet is-narrow-desktop">
-            {!isLoading && <PeopleFilters />}
+            {peopleInfo && <PeopleFilters />}
           </div>
 
           <div className="column">

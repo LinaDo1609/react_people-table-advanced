@@ -3,7 +3,7 @@ import { PeoplePage } from './components/PeoplePage';
 import { Navbar } from './components/Navbar';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { HomePage } from './components/HomePage';
-import { NotFound } from './components/NotFount';
+import { NotFound } from './components/NotFound';
 
 export const App = () => {
   return (
