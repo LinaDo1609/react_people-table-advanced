@@ -2,6 +2,7 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import { Person } from '../types';
 import { PersonLink } from './PersonLink';
 import { SearchLink } from './SearchLink';
+import { useMemo } from 'react';
 
 /* eslint-disable jsx-a11y/control-has-associated-label */
 type Props = {
@@ -31,25 +32,26 @@ export const PeopleTable: React.FC<Props> = ({ people }) => {
       : 'fas fa-sort';
   };
 
-  (people || [])?.sort((a, b) => {
-    switch (parameter) {
-      case 'name':
-        return isOrder
-          ? b.name.localeCompare(a.name)
-          : a.name.localeCompare(b.name);
-      case 'born':
-        return isOrder ? b.born - a.born : a.born - b.born;
-      case 'died':
-        return isOrder ? b.died - a.died : a.died - b.died;
-      case 'sex':
-        return isOrder
-          ? b.sex.localeCompare(a.sex)
-          : a.sex.localeCompare(b.sex);
-      default:
-        return 0;
-    }
-  });
-
+  const sortedPeople = useMemo(() => {
+    return (people || [])?.sort((a, b) => {
+      switch (parameter) {
+        case 'name':
+          return isOrder
+            ? b.name.localeCompare(a.name)
+            : a.name.localeCompare(b.name);
+        case 'born':
+          return isOrder ? b.born - a.born : a.born - b.born;
+        case 'died':
+          return isOrder ? b.died - a.died : a.died - b.died;
+        case 'sex':
+          return isOrder
+            ? b.sex.localeCompare(a.sex)
+            : a.sex.localeCompare(b.sex);
+        default:
+          return 0;
+      }
+    });
+  }, [people, isOrder, parameter]);
   const handleParam = (param: string) => {
     const isSame = parameter === param;
 
@@ -116,9 +118,13 @@ export const PeopleTable: React.FC<Props> = ({ people }) => {
       </thead>
 
       <tbody>
-        {people?.map(person => {
-          const foundMom = people.find(data => data.name === person.motherName);
-          const foundDad = people.find(data => data.name === person.fatherName);
+        {sortedPeople?.map(person => {
+          const foundMom = sortedPeople.find(
+            data => data.name === person.motherName,
+          );
+          const foundDad = sortedPeople.find(
+            data => data.name === person.fatherName,
+          );
 
           return (
             <tr

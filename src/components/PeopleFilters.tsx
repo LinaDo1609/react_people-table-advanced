@@ -24,8 +24,6 @@ export const PeopleFilters: React.FC = () => {
   ];
   const [searchParams, setSearchParams] = useSearchParams();
   const sex = searchParams.get('sex');
-  // const [inputParam, setInputParam] = useState('');
-
   const query = searchParams.get('query') || '';
   const searchCenturies = searchParams.getAll('centuries');
 
